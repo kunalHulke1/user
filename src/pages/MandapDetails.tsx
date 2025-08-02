@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { Play, Heart, MoreVertical, Star, Check, Calendar } from 'lucide-react';
-import BookingModal from '../components/BookingModal/BookingModal';
 import AvailabilityModal from '../components/AvailabilityModal/AvailabilityModal';
 import { getMandapDetails , getReviewsByMandapId , getPhotographersByMandapId } from '../services/mandapServices'
 import { se } from 'date-fns/locale';
@@ -111,9 +110,7 @@ const MandapDetails = () => {
   // const [selectedImage, setSelectedImage] = useState(venue.mainImage);
   const [selectedImage, setSelectedImage] = useState({});
   const [selectedTab, setSelectedTab] = useState('about');
-  const [showBookingForm, setShowBookingForm] = useState(false);
   const [showAvailability, setShowAvailability] = useState(false);
-  const [preSelectedDate, setPreSelectedDate] = useState<Date | null>(null);
   const isLoggedIn = true; // This should come from your auth context or state management
   // const availableDates = generateAvailableDates();
   const [isLoading, setIsLoading] = useState(true);
@@ -168,8 +165,11 @@ const MandapDetails = () => {
   }, []);
 
   const handleDateSelect = (date: Date) => {
-    setPreSelectedDate(date);
-    setShowBookingForm(true);
+    if (isLoggedIn) {
+      navigate(`/mandaps/${mandap._id}/book?date=${date.toISOString()}`);
+    } else {
+      navigate('/login');
+    }
   };
 
   return (
@@ -255,7 +255,7 @@ const MandapDetails = () => {
             <button 
               onClick={() => {
                 if (isLoggedIn) {
-                  setShowBookingForm(true);
+                  navigate(`/mandaps/${mandap._id}/book`);
                 } else {
                   navigate('/login');
                 }
@@ -267,15 +267,6 @@ const MandapDetails = () => {
           </div>
         </div>
       </div>
-
-      {showBookingForm && (
-        <BookingModal 
-          mandapId={mandap._id} 
-          onClose={() => setShowBookingForm(false)} 
-          availableDates={availableDates}
-          preSelectedDate={preSelectedDate}
-        />
-      )}
 
       {showAvailability && (
         <AvailabilityModal

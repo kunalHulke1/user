@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import Profile from './pages/Profile';
 import BookingHistory from './pages/BookingHistory';
 import BookingDetails from './pages/BookingDetails';
+import Booking from './pages/Booking';
 import ExploreVenue from './pages/ExploreVenue';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -32,6 +33,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/booking-history" element={<BookingHistory />} />
           <Route path="/booking/:id" element={<BookingDetails />} />
+          <Route path="/mandaps/:id/book" element={<Booking />} />
           <Route path="/explore-venue" element={<ExploreVenue />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
